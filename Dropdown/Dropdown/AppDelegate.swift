@@ -1,29 +1,21 @@
 //
 //  AppDelegate.swift
-//  Final Project
+//  Dropdown
 //
-//  Created by Matthew Gilman on 4/7/19.
+//  Created by Matthew Gilman on 4/27/19.
 //  Copyright © 2019 Matt Gilman. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var sharedSession = URLSession.shared
-    let dataController = DataController(modelName: "Final")
-    
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        dataController.load()
-        
-        let navigationController = window?.rootViewController as! UINavigationController
-        let searchViewController = navigationController.topViewController as! SearchViewController
-        searchViewController.dataController = dataController
         return true
     }
 
