@@ -1,5 +1,5 @@
 //
-//  AdCell.swift
+//  itemCell.swift
 //  Final Project
 //
 //  Created by Matthew Gilman on 6/5/19.
@@ -14,6 +14,7 @@ internal final class itemCell: UITableViewCell, Cell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet var cellImage: UIImageView!
+    @IBOutlet weak var activityIndidicator: UIActivityIndicatorView!
     
     override func prepareForReuse() {
         super.prepareForReuse()

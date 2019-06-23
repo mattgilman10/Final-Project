@@ -79,9 +79,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Location" borderStyle="roundedRect" placeholder="Region" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cVI-0g-4pj">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Location" borderStyle="roundedRect" placeholder="Region" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cVI-0g-4pj">
                                 <rect key="frame" x="16" y="104" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -90,25 +89,22 @@
                                     <outlet property="delegate" destination="Xed-he-Omm" id="ZSK-6A-geB"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Enter Search Here" borderStyle="roundedRect" placeholder="Search Item" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yc0-rV-Ivf">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Enter Search Here" borderStyle="roundedRect" placeholder="Search Item" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yc0-rV-Ivf">
                                 <rect key="frame" x="17" y="378" width="342" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <pickerView hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7N9-ay-LjP">
-                                <rect key="frame" x="17" y="142" width="343" height="176"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7N9-ay-LjP">
+                                <rect key="frame" x="17" y="142" width="343" height="216"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Xed-he-Omm" id="z35-7M-Tc0"/>
                                     <outlet property="delegate" destination="Xed-he-Omm" id="rDJ-lX-3LL"/>
                                 </connections>
                             </pickerView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khp-mS-lXL">
-                                <rect key="frame" x="96" y="453" width="183" height="47"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khp-mS-lXL">
+                                <rect key="frame" x="105" y="455" width="183" height="54"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                 <state key="normal" title="Search"/>
@@ -118,6 +114,20 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.67156890192346452" green="0.061067375636889479" blue="0.70767301321029663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="sYO-6L-KQ8" firstAttribute="trailing" secondItem="khp-mS-lXL" secondAttribute="trailing" constant="87" id="2CV-yR-90r"/>
+                            <constraint firstItem="sYO-6L-KQ8" firstAttribute="trailing" secondItem="cVI-0g-4pj" secondAttribute="trailing" constant="16" id="5wh-Lm-rj0"/>
+                            <constraint firstItem="7N9-ay-LjP" firstAttribute="leading" secondItem="sYO-6L-KQ8" secondAttribute="leading" constant="17" id="Bkd-F1-sYb"/>
+                            <constraint firstItem="yc0-rV-Ivf" firstAttribute="top" secondItem="7N9-ay-LjP" secondAttribute="bottom" constant="20" id="ESC-UQ-lNk"/>
+                            <constraint firstItem="cVI-0g-4pj" firstAttribute="leading" secondItem="sYO-6L-KQ8" secondAttribute="leading" constant="16" id="IQ6-2W-qRU"/>
+                            <constraint firstItem="khp-mS-lXL" firstAttribute="leading" secondItem="sYO-6L-KQ8" secondAttribute="leading" constant="105" id="TRh-Aq-GLP"/>
+                            <constraint firstItem="7N9-ay-LjP" firstAttribute="top" secondItem="cVI-0g-4pj" secondAttribute="bottom" constant="8" id="YKE-lo-NaG"/>
+                            <constraint firstItem="sYO-6L-KQ8" firstAttribute="trailing" secondItem="7N9-ay-LjP" secondAttribute="trailing" constant="15" id="akv-ul-Y5E"/>
+                            <constraint firstItem="cVI-0g-4pj" firstAttribute="top" secondItem="sYO-6L-KQ8" secondAttribute="top" constant="40" id="bFe-Cq-N0K"/>
+                            <constraint firstItem="sYO-6L-KQ8" firstAttribute="trailing" secondItem="yc0-rV-Ivf" secondAttribute="trailing" constant="16" id="bwa-yb-Lfk"/>
+                            <constraint firstItem="yc0-rV-Ivf" firstAttribute="leading" secondItem="sYO-6L-KQ8" secondAttribute="leading" constant="17" id="d3U-9W-2Jh"/>
+                            <constraint firstItem="khp-mS-lXL" firstAttribute="top" secondItem="yc0-rV-Ivf" secondAttribute="bottom" constant="47" id="fba-lC-Jhk"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="sYO-6L-KQ8"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="fQi-Sh-Hnu"/>
@@ -172,6 +182,10 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="omN-Od-fGZ">
+                                            <rect key="frame" x="205" y="26" width="20" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottomMargin" secondItem="RC6-ol-Tpx" secondAttribute="bottom" constant="12" id="1Bu-EK-0m9"/>
@@ -190,6 +204,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.67156890189999996" green="0.061067375639999998" blue="0.70767301319999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
+                                    <outlet property="activityIndidicator" destination="omN-Od-fGZ" id="uNu-b6-9WD"/>
                                     <outlet property="bioLabel" destination="RC6-ol-Tpx" id="s1T-tC-qa6"/>
                                     <outlet property="cellImage" destination="scf-K8-IOy" id="0u8-b3-HEA"/>
                                     <outlet property="titleLabel" destination="Lpj-fR-bSo" id="a1t-3c-zZD"/>

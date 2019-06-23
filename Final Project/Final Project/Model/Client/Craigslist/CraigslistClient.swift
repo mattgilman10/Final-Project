@@ -19,7 +19,7 @@ class CraigslistClient: NSObject {
     }
     
     
-    
+    //MARK: Task for grabbing the XML data and making API call
     func taskForGETMethod(region: String, search: String, completionHandlerForGET: @escaping (_ success: Bool, _ result: XML.Accessor, _ error: String?) -> Void) -> URLSessionDataTask {
         
         // create url and request

@@ -12,19 +12,22 @@ import CoreData
 
 class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
+    
+    //MARK: Class Variables
     var dataController:DataController!
     var fetchedResultsController:NSFetchedResultsController<SearchItem>!
+    var keyboardOnScreen = false
+    var locationList: Array<String> = []
     
+    // UI Outlets
     @IBOutlet weak var textBox: UITextField!
     @IBOutlet weak var dropDown: UIPickerView!
     @IBOutlet weak var searchBox: UITextField!
     
-    var keyboardOnScreen = false
-    var list = ["1", "2", "3", "5", "5", "3"]
-    var locationList: Array<String> = []
+    
     
 
-    
+    // MARK: Load functions
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -54,8 +57,7 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 
     }
     
-    // grabs the list from the input file
-    
+    //MARK: grabs the list from the input file that I parse
     private func grabList() {
         // Read the contents of the specified file
         let contents = try! String(contentsOfFile: "/Users/matthewgilman/Documents/IOS Degree/Final-Project/Final Project/Final Project/craigslist.txt")
@@ -70,14 +72,11 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         return
     }
     
+    // MARK: Once search button is clicked
     @IBAction func submitSearch(_ sender: Any) {
         if self.searchBox.text != "" && self.textBox.text != ""{
             self.addSearch()
             let fetchRequest:NSFetchRequest<SearchItem> = SearchItem.fetchRequest()
-
-//            let predicate = NSPredicate(format: "location == %@ and searchField == %@", argumentArray: [self.textBox.text!, self.searchBox.text!])
-//            fetchRequest.predicate = predicate
-            
             if let result = try? dataController.viewContext.fetch(fetchRequest),
                 let newSearch = result.last {
                 performSegue(withIdentifier: "GO", sender: newSearch)
@@ -87,9 +86,7 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         else{
             showMessageToUser(title: "Invalid Entry", msg: "You must fill in both fields")
         }
-            
-//            let controller = self.storyboard!.instantiateViewController(withIdentifier: "SearchedResultViewController") as! SearchedResultViewController
-//            self.navigationController!.pushViewController(controller, animated: true)
+        
     }
     
     // MARK: Segue to the next view
@@ -106,13 +103,12 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     //Mark add new location to core data
     func addSearch(){
         let newSearch = SearchItem(context: dataController.viewContext)
-        newSearch.searchField = self.searchBox.text
-        newSearch.location = self.textBox.text
-        print("saving search")
+        newSearch.searchField = self.searchBox.text!
+        newSearch.location = self.textBox.text!
         try? dataController.viewContext.save()
     }
     
-    
+    // MARK: Picker view components
     public func numberOfComponents(in pickerView: UIPickerView) -> Int{
         return 1
     }
@@ -139,7 +135,6 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         if textField == self.textBox {
             self.dropDown.isHidden = false
             //if you don't want the users to se the keyboard type:
-            
             textField.endEditing(true)
         }
     }
@@ -154,11 +149,14 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         textField.resignFirstResponder()
         return true
     }
-    // MARK: Show/Hide Keyboard
     
+    // MARK: Show/Hide Keyboard
     @objc func keyboardWillShow(_ notification: Notification) {
-        if !keyboardOnScreen {
-            //view.frame.origin.y = keyboardHeight(notification)
+        if !keyboardOnScreen{
+            if UIDevice.current.orientation.isLandscape{
+                view.frame.origin.y = -keyboardHeight(notification)
+            }
+            
             //movieImageView.isHidden = true
         }
     }
@@ -187,7 +185,7 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 }
 
     
-
+// MARK Notification sucriptions and Error handling
 private extension SearchViewController {
     
     func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {

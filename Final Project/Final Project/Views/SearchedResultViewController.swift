@@ -12,10 +12,13 @@ import CoreData
 import SwiftyXMLParser
 
 class SearchedResultViewController: UIViewController {
+    
+    // MARK: Class Variables
     var dataController:DataController!
     var fetchedResultsController:NSFetchedResultsController<Item>!
     var searchItem: SearchItem!
     
+    // MARK: UI Outlets
     @IBOutlet weak var tableView: UITableView!
     
     //MARK: Fetch result controller
@@ -38,34 +41,24 @@ class SearchedResultViewController: UIViewController {
         }
     }
     
+    // MARK: Initial loads
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.tabBar.isHidden = false
-        // get the app delegate
-        //let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(goBack))
-        
-        print(searchItem.location!)
-        print(searchItem.searchField!)
+
         setupFetchedResultsController()
-        print("run this function: \(fetchedResultsController.fetchedObjects!.count)")
         if fetchedResultsController.fetchedObjects!.count == 0{
-            print("grabbing search")
             grabSearch()
         }
-        // get the correct genre id
-        
-        // create and set logout button
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        setupFetchedResultsController()
-//        if let indexPath = tableView.indexPathForSelectedRow {
-//            tableView.deselectRow(at: indexPath, animated: false)
-//            tableView.reloadRows(at: [indexPath], with: .fade)
-//        }
+        setupFetchedResultsController()
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: false)
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -73,10 +66,12 @@ class SearchedResultViewController: UIViewController {
         fetchedResultsController = nil
     }
     
+    //MARK: Cancel button
     @IBAction func goBack(){
         self.dismiss(animated: true, completion: nil)
     }
     
+    // MARK: Grab data from API
     private func grabSearch(){
         CraigslistClient.sharedInstance().taskForGETMethod(region: searchItem.location!, search: searchItem.searchField!) { (success, results, error) in
             if success == false{
@@ -90,6 +85,7 @@ class SearchedResultViewController: UIViewController {
         }
     }
     
+    // MARK: Parse the xml.accessor given back from api call
     private func parseSingleResult(_ result: XML.Accessor){
         if let title = result["title"].text, let bio = result["description"].text, let date = result["dcterms:issued"].text, let link = result["link"].text {
             
@@ -106,7 +102,7 @@ class SearchedResultViewController: UIViewController {
         }
     }
     
-    // MARK: Add the photo to core data
+    // MARK: Add the Item to core data
     private func addItem(link: String, image: Data, bio: String, date:Date, title: String){
         let item = Item(context: dataController.viewContext)
         item.bio = bio
@@ -114,7 +110,7 @@ class SearchedResultViewController: UIViewController {
         item.title = title
         item.url = link
         item.image = image
-        item.searchItem = searchItem
+        item.searchItem = self.searchItem
         try? dataController.viewContext.save()
     }
     
@@ -132,27 +128,30 @@ class SearchedResultViewController: UIViewController {
 extension SearchedResultViewController:UITableViewDataSource, UITableViewDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-//        print("rows = \(fetchedResultsController.sections?.count)")
         return fetchedResultsController.sections?.count ?? 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        print(fetchedResultsController.sections?[section].numberOfObjects)
         return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let aItem = fetchedResultsController.object(at: indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: itemCell.defaultReuseIdentifier, for: indexPath) as! itemCell
+        cell.activityIndidicator.startAnimating()
+        
         cell.titleLabel.text = aItem.title
         cell.bioLabel.text = aItem.bio
         cell.cellImage.image = UIImage(data: aItem.image!)
+        
+        cell.activityIndidicator.stopAnimating()
+        cell.activityIndidicator.isHidden = true
         
 
 //        print("I AM IN HERE creating my cell")
         return cell
     }
-    
+    // MARK: Selected Row load craigslist website
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let itemClicked = fetchedResultsController.object(at: indexPath)
         let url = URL(string: itemClicked.url!)!
@@ -172,6 +171,7 @@ extension SearchedResultViewController:UITableViewDataSource, UITableViewDelegat
     
 }
 
+// MARK: Adding core data to the UITableView
 extension SearchedResultViewController:NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -212,7 +212,7 @@ extension SearchedResultViewController:NSFetchedResultsControllerDelegate {
     
 }
 
-// for parsing title
+// MARK: For parsing assistance with the xml.accessor and html data
 extension String {
     
     init(htmlEncodedString: String) {
