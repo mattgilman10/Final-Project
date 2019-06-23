@@ -4,7 +4,6 @@
         <attribute name="bio" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="issued" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="searchItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SearchItem" inverseName="items" inverseEntity="SearchItem" syncable="YES"/>
@@ -15,7 +14,7 @@
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="searchItem" inverseEntity="Item" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="Item" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="SearchItem" positionX="-45" positionY="45" width="128" height="90"/>
     </elements>
 </model>

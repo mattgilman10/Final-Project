@@ -7,9 +7,7 @@
 //
 
 import Foundation
-//import Alamofire
-//import SwiftyXMLParser
-//import Alamofire_SwiftyXMLParser
+import SwiftyXMLParser
 
 class CraigslistClient: NSObject {
     
@@ -22,14 +20,16 @@ class CraigslistClient: NSObject {
     
     
     
-    func taskForGETMethod(region: String, search: String, completionHandlerForGET: @escaping (_ success: Bool, _ result: [[String:AnyObject]]?, _ error: String?) -> Void) -> URLSessionDataTask {
+    func taskForGETMethod(region: String, search: String, completionHandlerForGET: @escaping (_ success: Bool, _ result: XML.Accessor, _ error: String?) -> Void) -> URLSessionDataTask {
         
         // create url and request
         
         
         //let urlString = "https://\(region).craigslist.org/search/sss?format=rss&query=\(search)"
         print("HERE IS MY SEARCH -- \(search)")
-        let urlString = "https://stlouis.craigslist.org/search/sss?format=rss&query=\(search)"
+        let newSearch = search.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+
+        let urlString = "https://stlouis.craigslist.org/search/sss?format=rss&query=\(newSearch!)"
         //        let urlString = Constants.Flickr.APIBaseURL + escapedParameters(methodParameters as [String:AnyObject])
         print("THIS IS MY URL: \(urlString)")
         let url = URL(string: urlString)!
@@ -43,7 +43,8 @@ class CraigslistClient: NSObject {
             func displayError(_ error: String) {
                 print(error)
                 print("URL at time of error: \(url)")
-                completionHandlerForGET(false, [[:]], error)
+                let blank = try! XML.parse("")
+                completionHandlerForGET(false, blank, error)
                 performUIUpdatesOnMain {
                     //self.setUIEnabled(true)
                     
@@ -67,38 +68,21 @@ class CraigslistClient: NSObject {
                 displayError("No data was returned by the request!")
                 return
             }
-            print("DATA")
-            print(data)
             let stringResponse = String(data: data, encoding: .utf8)
-            print("Response \(stringResponse!)")
+            // parse xml document
+            let xml = try! XML.parse(stringResponse!)
             
+            // access xml element
+            let path = ["rdf:RDF", "item"]
+            let elements = xml[path]
+//            print("Response \(elements)")
+            completionHandlerForGET(true, elements, nil)
             
-            // parse the data
-//            let parsedResult: [String:AnyObject]!
-//            do {
-//                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
-//                } catch {
-//                    displayError("Could not parse the data as JSON: '\(data)'")
-//                    return
-//                }
-//            print(parsedResult)
+//            if let title = elements[1]["title"].text{
+//                print("Title \(title)")
+//            }
             
-            //            /* GUARD: Did Flickr return an error (stat != ok)? */
-            //            guard let stat = parsedResult[Constants.FlickrResponseKeys.Status] as? String, stat == Constants.FlickrResponseValues.OKStatus else {
-            //                displayError("Flickr API returned an error. See error code and message in \(parsedResult)")
-            //                return
-            //            }
-            //
-            //            /* GUARD: Are the "photos" and "photo" keys in our result? */
-            //            guard let photosDictionary = parsedResult[Constants.FlickrResponseKeys.Photos] as? [String:AnyObject], let photoArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
-            //                displayError("Cannot find keys '\(Constants.FlickrResponseKeys.Photos)' and '\(Constants.FlickrResponseKeys.Photo)' in \(parsedResult)")
-            //                return
-            //            }
-            //
-            let test: [[String:AnyObject]]
-            test = []
-            completionHandlerForGET(true, test, nil)
-            
+  
         }
         
         // start the task!

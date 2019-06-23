@@ -9,14 +9,16 @@
 import Foundation
 import UIKit
 
-internal final class adCell: UITableViewCell, Cell {
+internal final class itemCell: UITableViewCell, Cell {
     // Outlets
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var pageCountLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var bioLabel: UILabel!
+    @IBOutlet var cellImage: UIImageView!
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        nameLabel.text = nil
-        pageCountLabel.text = nil
+        titleLabel.text = nil
+        bioLabel.text = nil
+        cellImage.image = nil
     }
 }

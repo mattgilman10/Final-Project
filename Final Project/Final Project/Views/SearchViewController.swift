@@ -47,11 +47,11 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         // display all of the saved data
         if let result = try? dataController.viewContext.fetch(fetchRequest){
             if result != []{
-                self.textBox.text = result[0].location
-                self.searchBox.text = result[0].searchField
+                self.textBox.text = result.last?.location
+                self.searchBox.text = result.last?.searchField
             }
         }
-        
+
     }
     
     // grabs the list from the input file
@@ -71,26 +71,25 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     
     @IBAction func submitSearch(_ sender: Any) {
-        if searchBox.text != nil && textBox.text != nil{
+        if self.searchBox.text != "" && self.textBox.text != ""{
+            self.addSearch()
             let fetchRequest:NSFetchRequest<SearchItem> = SearchItem.fetchRequest()
-            if self.textBox.text! != nil && self.searchBox.text != nil{
-                addSearch()
-                 let predicate = NSPredicate(format: "location == %@ and searchField == %@", argumentArray: [self.textBox.text!, self.searchBox.text!])
-                fetchRequest.predicate = predicate
-                
-                if let result = try? dataController.viewContext.fetch(fetchRequest),
-                    let newSearch = result.first {
-                    performSegue(withIdentifier: "GO", sender: newSearch)
-                }
-            }
-            else{
-                showMessageToUser(title: "Invalid Entry", msg: "You must fill in both fields")
-            }
+
+//            let predicate = NSPredicate(format: "location == %@ and searchField == %@", argumentArray: [self.textBox.text!, self.searchBox.text!])
+//            fetchRequest.predicate = predicate
             
+            if let result = try? dataController.viewContext.fetch(fetchRequest),
+                let newSearch = result.last {
+                performSegue(withIdentifier: "GO", sender: newSearch)
+            }
+        }
+        
+        else{
+            showMessageToUser(title: "Invalid Entry", msg: "You must fill in both fields")
+        }
             
 //            let controller = self.storyboard!.instantiateViewController(withIdentifier: "SearchedResultViewController") as! SearchedResultViewController
 //            self.navigationController!.pushViewController(controller, animated: true)
-        }
     }
     
     // MARK: Segue to the next view
@@ -109,6 +108,7 @@ class SearchViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         let newSearch = SearchItem(context: dataController.viewContext)
         newSearch.searchField = self.searchBox.text
         newSearch.location = self.textBox.text
+        print("saving search")
         try? dataController.viewContext.save()
     }
     
