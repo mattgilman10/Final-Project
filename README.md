@@ -4,3 +4,5 @@ This project is designed to call on the Craiglist API, for which there is not a 
 
 This app is designed to be a catalog for craigslist and grant easy access without have to go to the browser and sift through craigslist massive application. This simplifies the way to search for products and devices that the user wants. 
 
+For anyone trying to fork or run this. Ensure you run it using the Final Project.xcworkspace file. 
+
